@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_chat_ui: ^1.6.15
   flutter_chat_types: ^3.6.2
+  
+  record: ^5.0.4
+  path_provider: ^2.1.2
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
