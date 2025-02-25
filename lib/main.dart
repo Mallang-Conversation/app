@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               ChatEditBar(
                 onSendPressed: _handleSendPressed,
+                onMicPressed: _handleMicPressed,
               ),
               SizedBox(height: MediaQuery.of(context).padding.bottom)
             ],
@@ -71,4 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _addMessage(textMessage);
   }
+
+  void _handleMicPressed() {}
 }

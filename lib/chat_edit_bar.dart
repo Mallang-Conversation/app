@@ -3,9 +3,11 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class ChatEditBar extends StatefulWidget {
   final void Function(types.PartialText) onSendPressed;
+  final void Function() onMicPressed;
 
   const ChatEditBar({
     super.key,
+    required this.onMicPressed,
     required this.onSendPressed,
   });
 
