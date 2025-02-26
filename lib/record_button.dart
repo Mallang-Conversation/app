@@ -6,20 +6,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: RecordingScreen(),
-  ));
-}
-
-class RecordingScreen extends StatefulWidget {
-  const RecordingScreen({super.key});
+class RecordingButton extends StatefulWidget {
+  const RecordingButton({super.key});
 
   @override
-  State<RecordingScreen> createState() => _RecordingScreenState();
+  State<RecordingButton> createState() => _RecordingButtonState();
 }
 
-class _RecordingScreenState extends State<RecordingScreen> {
+class _RecordingButtonState extends State<RecordingButton> {
   bool isRecording = false;
   late final AudioRecorder _audioRecorder;
   String? _audioPath;
@@ -103,36 +97,35 @@ class _RecordingScreenState extends State<RecordingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          if (isRecording) const CustomRecordingWaveWidget(),
-          const SizedBox(height: 16),
-          CustomRecordingButton(
-            isRecording: isRecording,
-            onPressed: () => _record(),
-          ),
-        ],
+    return Container(
+      child: CustomRecordingWaveWidget(
+        isRecording: isRecording,
+        onMicPressed: _record,
       ),
     );
   }
 }
 
 class CustomRecordingWaveWidget extends StatefulWidget {
-  const CustomRecordingWaveWidget({super.key});
+  final bool isRecording;
+  final void Function() onMicPressed;
+
+  const CustomRecordingWaveWidget({
+    super.key,
+    required this.onMicPressed,
+    required this.isRecording,
+  });
 
   @override
   State<CustomRecordingWaveWidget> createState() => _RecordingWaveWidgetState();
 }
 
 class _RecordingWaveWidgetState extends State<CustomRecordingWaveWidget> {
-  final List<double> _heights = [0.05, 0.07, 0.1, 0.07, 0.05];
+  List<double> _heights = [0.05, 0.07, 0.1, 0.07, 0.05];
   Timer? _timer;
 
   @override
   void initState() {
-    _startAnimating();
     super.initState();
   }
 
@@ -140,6 +133,19 @@ class _RecordingWaveWidgetState extends State<CustomRecordingWaveWidget> {
   void dispose() {
     _timer?.cancel();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(CustomRecordingWaveWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isRecording != oldWidget.isRecording) {
+      if (widget.isRecording) {
+        _startAnimating();
+      } else {
+        _heights = [0.05, 0.07, 0.1, 0.07, 0.05];
+        _timer?.cancel();
+      }
+    }
   }
 
   void _startAnimating() {
@@ -153,68 +159,25 @@ class _RecordingWaveWidgetState extends State<CustomRecordingWaveWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.1,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: _heights.map((height) {
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            width: 20,
-            height: MediaQuery.sizeOf(context).height * height,
-            margin: const EdgeInsets.only(right: 10),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(50),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class CustomRecordingButton extends StatelessWidget {
-  const CustomRecordingButton({
-    super.key,
-    required this.isRecording,
-    required this.onPressed,
-  });
-
-  final bool isRecording;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      height: 100,
-      width: 100,
-      duration: const Duration(milliseconds: 300),
-      padding: EdgeInsets.all(
-        isRecording ? 25 : 15,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.blue,
-          width: isRecording ? 8 : 3,
-        ),
-      ),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        height: 70,
-        width: 70,
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          shape: isRecording ? BoxShape.rectangle : BoxShape.circle,
-        ),
-        child: MaterialButton(
-          onPressed: onPressed,
-          shape: const CircleBorder(),
-          child: const SizedBox.shrink(),
-        ),
-      ),
-    );
+    return GestureDetector(
+        onTap: widget.onMicPressed,
+        child: SizedBox(
+          height: 30,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _heights.map((height) {
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: 3,
+                height: 200 * height,
+                margin: const EdgeInsets.only(right: 2),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+              );
+            }).toList(),
+          ),
+        ));
   }
 }

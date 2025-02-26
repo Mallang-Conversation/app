@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+import 'record_button.dart';
+
 class ChatEditBar extends StatefulWidget {
   final void Function(types.PartialText) onSendPressed;
   final void Function() onMicPressed;
@@ -71,18 +73,11 @@ class _ChatEditBarState extends State<ChatEditBar> {
                       onSubmitted: _send,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      // TODO: Implement audio recording functionality
-                      // Here we would:
-                      // 1. Request microphone permissions
-                      // 2. Start/stop audio recording
-                      // 3. Save the recorded audio
-                      // 4. Send the audio message
-                    },
-                    icon: const Icon(Icons.graphic_eq),
-                  ),
-                  const SizedBox(width: 8.0),
+                  Container(
+                      width: 40,
+                      height: 30,
+                      margin: EdgeInsets.only(right: 6),
+                      child: RecordingButton())
                 ],
               ),
             ),
