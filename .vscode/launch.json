@@ -5,18 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "my_first_flutter",
+      "name": "mallang_flutter",
       "request": "launch",
       "type": "dart"
     },
     {
-      "name": "my_first_flutter (profile mode)",
+      "name": "mallang_flutter (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
-      "name": "my_first_flutter (release mode)",
+      "name": "mallang_flutter (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
