@@ -97,32 +97,29 @@ class _RecordingButtonState extends State<RecordingButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CustomRecordingWaveWidget(
-        isRecording: isRecording,
-        onMicPressed: _record,
-      ),
+    return CustomRecordingWidget(
+      isRecording: isRecording,
+      onMicPressed: _record,
     );
   }
 }
 
-class CustomRecordingWaveWidget extends StatefulWidget {
+class CustomRecordingWidget extends StatefulWidget {
   final bool isRecording;
   final void Function() onMicPressed;
 
-  const CustomRecordingWaveWidget({
+  const CustomRecordingWidget({
     super.key,
     required this.onMicPressed,
     required this.isRecording,
   });
 
   @override
-  State<CustomRecordingWaveWidget> createState() => _RecordingWaveWidgetState();
+  State<CustomRecordingWidget> createState() => _RecordingWaveWidgetState();
 }
 
-class _RecordingWaveWidgetState extends State<CustomRecordingWaveWidget> {
-  List<double> _heights = [0.05, 0.07, 0.1, 0.07, 0.05];
-  Timer? _timer;
+class _RecordingWaveWidgetState extends State<CustomRecordingWidget> {
+  Color iconColor = Colors.grey;
 
   @override
   void initState() {
@@ -131,53 +128,26 @@ class _RecordingWaveWidgetState extends State<CustomRecordingWaveWidget> {
 
   @override
   void dispose() {
-    _timer?.cancel();
     super.dispose();
   }
 
   @override
-  void didUpdateWidget(CustomRecordingWaveWidget oldWidget) {
+  void didUpdateWidget(covariant CustomRecordingWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     if (widget.isRecording != oldWidget.isRecording) {
       if (widget.isRecording) {
-        _startAnimating();
+        iconColor = Colors.blue;
       } else {
-        _heights = [0.05, 0.07, 0.1, 0.07, 0.05];
-        _timer?.cancel();
+        iconColor = Colors.grey;
       }
     }
   }
 
-  void _startAnimating() {
-    _timer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
-      setState(() {
-        // This is a simple way to rotate the list, creating a wave effect.
-        _heights.add(_heights.removeAt(0));
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: widget.onMicPressed,
-        child: SizedBox(
-          height: 30,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _heights.map((height) {
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: 3,
-                height: 200 * height,
-                margin: const EdgeInsets.only(right: 2),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              );
-            }).toList(),
-          ),
-        ));
+    return IconButton(
+        onPressed: widget.onMicPressed,
+        icon: Icon(Icons.mic, color: iconColor));
   }
 }

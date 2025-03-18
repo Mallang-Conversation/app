@@ -73,11 +73,7 @@ class _ChatEditBarState extends State<ChatEditBar> {
                       onSubmitted: _send,
                     ),
                   ),
-                  Container(
-                      width: 40,
-                      height: 30,
-                      margin: EdgeInsets.only(right: 6),
-                      child: RecordingButton())
+                  RecordingButton()
                 ],
               ),
             ),
