@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:async';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -13,7 +15,26 @@ String randomString() {
   return base64UrlEncode(values);
 }
 
+Future<int> futureNumber() async {
+  final number = await Future<int>.delayed(Duration(seconds: 3), () {
+    return 100;
+  });
+
+  debugPrint(number.toString());
+  return number;
+}
+
+Future<void> fetchAlbum() async {
+  final result =
+      await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/pikachu'));
+  final pikachu = jsonDecode(result.body);
+  final id = pikachu['id'];
+  debugPrint(id.toString());
+}
+
 void main() {
+  fetchAlbum();
+
   runApp(const MyApp());
 }
 
