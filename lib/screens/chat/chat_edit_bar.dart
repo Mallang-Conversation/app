@@ -18,8 +18,7 @@ class ChatEditBar extends StatefulWidget {
 }
 
 class _ChatEditBarState extends State<ChatEditBar> {
-  final TextEditingController _editController =
-      TextEditingController(text: 'Message?');
+  final TextEditingController _editController = TextEditingController(text: '');
   final FocusNode _focusNode = FocusNode();
 
   void _send(String query) {
@@ -64,7 +63,7 @@ class _ChatEditBarState extends State<ChatEditBar> {
                     child: TextField(
                       decoration: const InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
-                        hintText: "Message?",
+                        hintText: "",
                         border: InputBorder.none,
                       ),
                       textInputAction: TextInputAction.send,

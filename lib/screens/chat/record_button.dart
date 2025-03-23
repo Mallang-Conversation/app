@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
-import '../../services/chat.dart';
+import '/services/chat.dart';
 
 class RecordingButton extends StatefulWidget {
   const RecordingButton({super.key});
