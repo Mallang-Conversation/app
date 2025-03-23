@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
+
+import '../../services/chat.dart';
 
 class RecordingButton extends StatefulWidget {
   const RecordingButton({super.key});
@@ -67,7 +70,13 @@ class _RecordingButtonState extends State<RecordingButton> {
       setState(() {
         _audioPath = path!;
       });
+
       debugPrint('=========>>>>>> PATH: $_audioPath <<<<<<===========');
+
+      if (_audioPath != null) {
+        File audioFile = File(_audioPath!);
+        await fetchSpeechToText(audioFile);
+      }
     } catch (e) {
       debugPrint('ERROR WHILE STOP RECORDING: $e');
     }
