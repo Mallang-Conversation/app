@@ -4,7 +4,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+
 import '/screens/chat/chat_edit_bar.dart';
+import '/utils/socket.dart';
+import '/constants/game.dart';
 
 String randomString() {
   final random = Random.secure();
@@ -20,8 +23,19 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final List<types.Message> _messages = [];
+  final _ai = const types.User(id: 'A1B2C3D4-E5F6-7890-ABCD-EF1234567890');
   final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
+  final List<types.Message> _messages = [];
+  late GameSocket socketChannel;
+
+  @override
+  void initState() {
+    super.initState();
+    socketChannel = GameSocket(
+      gameType: wordChain,
+      onMessageReceived: _handleReceiveMessage,
+    );
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -54,6 +68,18 @@ class _ChatPageState extends State<ChatPage> {
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: randomString(),
       text: message.text,
+    );
+
+    socketChannel.sendMessage(message.text);
+    _addMessage(textMessage);
+  }
+
+  void _handleReceiveMessage(String msg) {
+    final textMessage = types.TextMessage(
+      author: _ai,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: randomString(),
+      text: msg,
     );
 
     _addMessage(textMessage);

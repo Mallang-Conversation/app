@@ -27,6 +27,7 @@ class GameSocket {
 
     channel.stream.listen(
       (message) {
+        debugPrint('WebSocket message: $message');
         onMessageReceived(message);
       },
       onError: (error) {

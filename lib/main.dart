@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/chat/chat_page.dart';
 
-// For the testing purposes, you should probably use https://pub.dev/packages/uuid.
-
 void main() {
   runApp(const MyApp());
 }
