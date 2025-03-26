@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -8,6 +9,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import '/screens/chat/chat_edit_bar.dart';
 import '/utils/socket.dart';
 import '/constants/game.dart';
+import '/services/chat.dart';
 
 String randomString() {
   final random = Random.secure();
@@ -48,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
             children: [
               ChatEditBar(
                 onSendPressed: _handleSendPressed,
-                onMicPressed: _handleMicPressed,
+                onStopRecording: _handleStopRecording,
               ),
               SizedBox(height: MediaQuery.of(context).padding.bottom)
             ],
@@ -85,5 +87,10 @@ class _ChatPageState extends State<ChatPage> {
     _addMessage(textMessage);
   }
 
-  void _handleMicPressed() {}
+  void _handleStopRecording(File audioFile) async {
+    final String res = await fetchSpeechToText(audioFile);
+    if (res.isNotEmpty) {
+      _handleSendPressed(types.PartialText(text: res));
+    }
+  }
 }

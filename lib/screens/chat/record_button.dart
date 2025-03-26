@@ -10,7 +10,12 @@ import 'package:record/record.dart';
 import '/services/chat.dart';
 
 class RecordingButton extends StatefulWidget {
-  const RecordingButton({super.key});
+  final void Function(File) onStopRecording;
+
+  const RecordingButton({
+    super.key,
+    required this.onStopRecording,
+  });
 
   @override
   State<RecordingButton> createState() => _RecordingButtonState();
@@ -75,7 +80,7 @@ class _RecordingButtonState extends State<RecordingButton> {
 
       if (_audioPath != null) {
         File audioFile = File(_audioPath!);
-        await fetchSpeechToText(audioFile);
+        widget.onStopRecording(audioFile);
       }
     } catch (e) {
       debugPrint('ERROR WHILE STOP RECORDING: $e');

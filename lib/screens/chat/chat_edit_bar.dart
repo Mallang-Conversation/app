@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -5,11 +7,11 @@ import 'record_button.dart';
 
 class ChatEditBar extends StatefulWidget {
   final void Function(types.PartialText) onSendPressed;
-  final void Function() onMicPressed;
+  final void Function(File) onStopRecording;
 
   const ChatEditBar({
     super.key,
-    required this.onMicPressed,
+    required this.onStopRecording,
     required this.onSendPressed,
   });
 
@@ -72,7 +74,7 @@ class _ChatEditBarState extends State<ChatEditBar> {
                       onSubmitted: _send,
                     ),
                   ),
-                  RecordingButton()
+                  RecordingButton(onStopRecording: widget.onStopRecording)
                 ],
               ),
             ),

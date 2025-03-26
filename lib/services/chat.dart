@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 const String sttUrl = 'http://10.0.2.2:8081/api/v1/audio';
 
-Future<void> fetchSpeechToText(File audioFile) async {
+Future<String> fetchSpeechToText(File audioFile) async {
   var request = http.MultipartRequest('POST', Uri.parse(sttUrl));
   request.files.add(await http.MultipartFile.fromPath(
     'file',
@@ -20,16 +20,15 @@ Future<void> fetchSpeechToText(File audioFile) async {
   if (response.statusCode == 200) {
     final responseData = await response.stream.toBytes();
     final responseString = String.fromCharCodes(responseData);
-    final decodedString = jsonDecode(responseString);
+    debugPrint('Success to upload audio: $responseString');
 
-    debugPrint('Success to upload audio: $decodedString');
+    return responseString.trim();
   } else {
     debugPrint('Failed to upload audio: ${response.statusCode}');
-
     final responseData = await response.stream.toBytes();
     final responseString = String.fromCharCodes(responseData);
-    final decodedString = jsonDecode(responseString);
+    debugPrint('Failed to upload audio: $responseString');
 
-    debugPrint('Failed to upload audio: $decodedString');
+    return '';
   }
 }

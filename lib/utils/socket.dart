@@ -21,7 +21,11 @@ class GameSocket {
       Uri.parse('$socketUrl?game=$gameType'),
     );
 
-    await channel.ready;
+    try {
+      await channel.ready;
+    } catch (e) {
+      debugPrint('WebSocket connection error: $e');
+    }
 
     debugPrint('WebSocket connected!!');
 
