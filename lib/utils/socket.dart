@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-const String socketUrl = 'ws://10.0.2.2:8081/ws/chat';
+const String socketUrl = 'wss://158.180.73.169:8081/ws/chat';
 
 class GameSocket {
   final String gameType;
