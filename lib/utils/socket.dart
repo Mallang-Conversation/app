@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-const String socketUrl = 'wss://158.180.73.169:8081/ws/chat';
+import '/constants/common.dart';
 
 class GameSocket {
   final String gameType;
@@ -18,7 +18,7 @@ class GameSocket {
 
   void connect() async {
     channel = WebSocketChannel.connect(
-      Uri.parse('$socketUrl?game=$gameType'),
+      Uri.parse('$chatSocketUrl?game=$gameType'),
     );
 
     try {

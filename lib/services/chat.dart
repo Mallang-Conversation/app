@@ -1,11 +1,10 @@
-import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-const String sttUrl = 'https://158.180.73.169:8081/api/v1/audio';
+import '/constants/common.dart';
 
 Future<String> fetchSpeechToText(File audioFile) async {
   var request = http.MultipartRequest('POST', Uri.parse(sttUrl));
